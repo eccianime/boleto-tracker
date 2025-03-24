@@ -9,6 +9,7 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
+      "googleServicesFile": "./src/config/GoogleService-Info.plist",
       "supportsTablet": true,
       "icon": {
         "dark": "./src/assets/images/icon.png",
@@ -18,6 +19,7 @@
       "bundleIdentifier": "com.ingjeanpaulrojas.payflowrn"
     },
     "android": {
+      "googleServicesFile": "./src/config/google-services.json",
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -35,6 +37,12 @@
         "expo-splash-screen",
         {
           "backgroundColor": "#000000"
+        }
+      ],
+      [
+        "@react-native-google-signin/google-signin",
+        {
+          "iosUrlScheme": "com.googleusercontent.apps.665566344654-6h43s71gj4e37l39o1i0q2qpkmm8t460"
         }
       ]
     ],

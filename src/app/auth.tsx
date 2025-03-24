@@ -11,7 +11,38 @@ import {
 import logoImage from '@/assets/images/logo.png';
 import googleImage from '@/assets/images/google.png';
 
+import {
+  GoogleSignin,
+  statusCodes,
+  isErrorWithCode,
+  isSuccessResponse,
+} from '@react-native-google-signin/google-signin';
+
+GoogleSignin.configure({
+  webClientId: '',
+});
+
 export default function Home() {
+  const signIn = async () => {
+    try {
+      await GoogleSignin.hasPlayServices();
+      const response = await GoogleSignin.signIn();
+      if (isSuccessResponse(response)) {
+        console.log(response.data.user);
+      }
+    } catch (error) {
+      if (isErrorWithCode(error)) {
+        switch (error.code) {
+          case statusCodes.IN_PROGRESS:
+            break;
+          case statusCodes.PLAY_SERVICES_NOT_AVAILABLE:
+            break;
+          default:
+        }
+      }
+    }
+  };
+
   useEffect(() => {
     const backHandler = BackHandler.addEventListener(
       'hardwareBackPress',
@@ -34,7 +65,10 @@ export default function Home() {
         <Text className='text-center text-4xl text-heading font-lexend-semibold mb-10'>
           {'Organize seus\nboletos em um\nsó lugar'}
         </Text>
-        <TouchableOpacity className='w-[300] h-14 border border-stroke bg-boxes rounded flex-row'>
+        <TouchableOpacity
+          className='w-[300] h-14 border border-stroke bg-boxes rounded flex-row'
+          onPress={signIn}
+        >
           <View className='w-14 border-r border-stroke items-center justify-center'>
             <Image source={googleImage} className='h-6 w-6' />
           </View>
