@@ -1,52 +1,28 @@
 import '../../global.css';
 
 import { Stack } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
+
+import { Provider } from 'react-redux';
+import { store } from '@/redux/store';
 
 import {
-  useFonts,
-  Inter_100Thin,
-  Inter_200ExtraLight,
-  Inter_300Light,
   Inter_400Regular,
-  Inter_500Medium,
   Inter_600SemiBold,
   Inter_700Bold,
-  Inter_800ExtraBold,
-  Inter_900Black,
+  useFonts,
 } from '@expo-google-fonts/inter';
 import {
-  Lexend_100Thin,
-  Lexend_200ExtraLight,
-  Lexend_300Light,
   Lexend_400Regular,
-  Lexend_500Medium,
   Lexend_600SemiBold,
-  Lexend_700Bold,
-  Lexend_800ExtraBold,
-  Lexend_900Black,
 } from '@expo-google-fonts/lexend';
 
 export default function RootLayout() {
   const [fontsLoaded] = useFonts({
-    // Lexend_100Thin,
-    // Lexend_200ExtraLight,
-    // Lexend_300Light,
     Lexend_400Regular,
-    // Lexend_500Medium,
     Lexend_600SemiBold,
-    //   Lexend_700Bold,
-    //   Lexend_800ExtraBold,
-    //   Lexend_900Black,
-    //   Inter_100Thin,
-    // Inter_200ExtraLight,
-    // Inter_300Light,
     Inter_400Regular,
-    // Inter_500Medium,
     Inter_600SemiBold,
     Inter_700Bold,
-    // Inter_800ExtraBold,
-    // Inter_900Black,
   });
 
   if (!fontsLoaded) {
@@ -54,13 +30,15 @@ export default function RootLayout() {
   }
 
   return (
-    <Stack
-      screenOptions={{
-        headerShown: false,
-        contentStyle: { backgroundColor: 'white' },
-      }}
-    >
-      <Stack.Screen name='auth' options={{ gestureEnabled: false }} />
-    </Stack>
+    <Provider store={store}>
+      <Stack
+        screenOptions={{
+          headerShown: false,
+          contentStyle: { backgroundColor: 'white' },
+        }}
+      >
+        <Stack.Screen name='auth' options={{ gestureEnabled: false }} />
+      </Stack>
+    </Provider>
   );
 }

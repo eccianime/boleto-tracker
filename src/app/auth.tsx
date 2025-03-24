@@ -17,18 +17,23 @@ import {
   isErrorWithCode,
   isSuccessResponse,
 } from '@react-native-google-signin/google-signin';
+import { useAppDispatch } from '@/hooks';
+import { setUserInfo } from '@/redux/slices/userSlice';
+import { router } from 'expo-router';
 
 GoogleSignin.configure({
   webClientId: '',
 });
 
-export default function Home() {
+export default function Auth() {
+  const dispatch = useAppDispatch();
   const signIn = async () => {
     try {
       await GoogleSignin.hasPlayServices();
       const response = await GoogleSignin.signIn();
       if (isSuccessResponse(response)) {
-        console.log(response.data.user);
+        dispatch(setUserInfo(response.data.user));
+        router.navigate('/(tabs)/home');
       }
     } catch (error) {
       if (isErrorWithCode(error)) {
