@@ -5,6 +5,14 @@ module.exports = {
   presets: [require('nativewind/preset')],
   theme: {
     extend: {
+      colors: {
+        primary: '#FF941A',
+        heading: '#585666',
+        body: '#706E7A',
+        inputs: '#B1B0B8',
+        boxes: '#FAFAFC',
+        stroke: '#E3E3E5',
+      },
       fontFamily: {
         'lexend-regular': ['Lexend_400Regular', 'sans-serif'],
         'lexend-semibold': ['Lexend_600SemiBold', 'sans-serif'],

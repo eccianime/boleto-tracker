@@ -1,17 +1,15 @@
-import { Text, View } from 'react-native';
+import SplashScreen from '@/components/SplashScreen';
+import { router } from 'expo-router';
+import { useEffect } from 'react';
 
 export default function Index() {
-  return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
-    >
-      <Text className='text-2xl font-lexend-semibold'>
-        Edit app/index.tsx to edit this screen.
-      </Text>
-    </View>
-  );
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      router.navigate('/home');
+    }, 2000);
+
+    return () => clearTimeout(timeout);
+  }, []);
+
+  return <SplashScreen />;
 }

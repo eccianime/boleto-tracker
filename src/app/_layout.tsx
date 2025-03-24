@@ -27,8 +27,6 @@ import {
   Lexend_900Black,
 } from '@expo-google-fonts/lexend';
 
-SplashScreen.preventAutoHideAsync();
-
 export default function RootLayout() {
   const [fontsLoaded] = useFonts({
     // Lexend_100Thin,
@@ -55,14 +53,14 @@ export default function RootLayout() {
     return null;
   }
 
-  SplashScreen.hide();
-
   return (
     <Stack
       screenOptions={{
         headerShown: false,
         contentStyle: { backgroundColor: 'white' },
       }}
-    />
+    >
+      <Stack.Screen name='home' options={{ gestureEnabled: false }} />
+    </Stack>
   );
 }
