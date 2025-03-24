@@ -60,7 +60,7 @@ export default function RootLayout() {
         contentStyle: { backgroundColor: 'white' },
       }}
     >
-      <Stack.Screen name='home' options={{ gestureEnabled: false }} />
+      <Stack.Screen name='auth' options={{ gestureEnabled: false }} />
     </Stack>
   );
 }
