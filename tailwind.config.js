@@ -7,12 +7,16 @@ module.exports = {
     extend: {
       colors: {
         primary: '#FF941A',
+        secondary: '#585666',
         heading: '#585666',
         body: '#706E7A',
         inputs: '#B1B0B8',
         boxes: '#FAFAFC',
         stroke: '#E3E3E5',
       },
+      // margin: {
+      //   18: 16,
+      // },
       fontFamily: {
         'lexend-regular': ['Lexend_400Regular', 'sans-serif'],
         'lexend-semibold': ['Lexend_600SemiBold', 'sans-serif'],
