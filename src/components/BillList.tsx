@@ -1,5 +1,11 @@
 import colors from '@/config/colors';
-import { ActivityIndicator, FlatList, Text, View } from 'react-native';
+import {
+  ActivityIndicator,
+  FlatList,
+  Platform,
+  Text,
+  View,
+} from 'react-native';
 import BillListItem from './BillListItem';
 import { BillListProps } from './types';
 
@@ -13,7 +19,9 @@ export default function BillList({
     <FlatList
       bounces={false}
       showsVerticalScrollIndicator={false}
-      contentContainerClassName='flex-grow mx-6 pb-[100]'
+      contentContainerClassName={`flex-grow mx-6 ${
+        Platform.OS === 'ios' ? 'pb-[100]' : 'pb-[70]'
+      }`}
       data={data}
       ListHeaderComponent={() => (
         <View className='mt-8'>

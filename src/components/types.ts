@@ -1,3 +1,6 @@
+import { TextInputProps, TouchableOpacityProps } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+
 export type HeaderProps = {
   hasExtraHeight?: boolean;
   name: string | null;
@@ -20,4 +23,13 @@ export type BillListItemProps = {
   title: string;
   expireDate: string;
   amount: number;
+};
+
+export type InputProps = TextInputProps & {
+  iconName: keyof typeof Ionicons.glyphMap;
+};
+
+export type ButtonProps = TouchableOpacityProps & {
+  text: string;
+  variant: 'primary' | 'secondary';
 };

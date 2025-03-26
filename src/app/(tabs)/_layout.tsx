@@ -6,7 +6,7 @@ import { router, Tabs } from 'expo-router';
 import { FC } from 'react';
 import { SvgProps } from 'react-native-svg';
 import AddBillSvg from '@/assets/svg/add-bill.svg';
-import { TouchableOpacity, View } from 'react-native';
+import { Platform, TouchableOpacity, View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
 type Routes = 'home' | 'history';
@@ -31,10 +31,11 @@ export default function TabLayout() {
             renderIcon(route.name as Routes, focused),
           tabBarStyle: {
             position: 'absolute',
-            bottom: 0,
+            bottom: Platform.select({ ios: 0, android: 30 }),
             backgroundColor: 'transparent',
             borderTopWidth: 0,
             zIndex: 10,
+            shadowColor: 'transparent',
           },
           tabBarItemStyle: {
             backgroundColor: 'transparent',
@@ -48,7 +49,7 @@ export default function TabLayout() {
           bottom: 0,
           left: 0,
           right: 0,
-          height: 140,
+          height: Platform.select({ ios: 140, android: 100 }),
           shadowOpacity: 0,
         }}
       />

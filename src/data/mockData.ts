@@ -63,7 +63,7 @@ export const DATA = [
   {
     id: '011',
     title: 'Plano de saúde',
-    expireDate: '10/03/2024',
+    expireDate: '10/03/2025',
     amount: 800,
   },
 ];

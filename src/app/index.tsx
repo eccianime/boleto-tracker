@@ -5,8 +5,8 @@ import { useEffect } from 'react';
 export default function Index() {
   useEffect(() => {
     const timeout = setTimeout(() => {
-      router.navigate('/(tabs)/home');
-      // router.navigate('/auth');
+      // router.navigate('/(tabs)/home');
+      router.navigate('/(auth)/start');
     }, 2000);
 
     return () => clearTimeout(timeout);
