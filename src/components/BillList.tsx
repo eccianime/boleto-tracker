@@ -1,8 +1,14 @@
-import { FlatList, Text, View } from 'react-native';
+import colors from '@/config/colors';
+import { ActivityIndicator, FlatList, Text, View } from 'react-native';
 import BillListItem from './BillListItem';
 import { BillListProps } from './types';
 
-export default function BillList({ title, data, isPayed }: BillListProps) {
+export default function BillList({
+  title,
+  data,
+  isPayed,
+  isLoading,
+}: BillListProps) {
   return (
     <FlatList
       bounces={false}
@@ -25,13 +31,19 @@ export default function BillList({ title, data, isPayed }: BillListProps) {
         </View>
       )}
       renderItem={({ item }) => <BillListItem {...item} />}
-      ListEmptyComponent={() => (
-        <View className='flex-1 justify-center items-center'>
-          <Text className='font-inter-regular text-body text-lg'>
-            Nenhum boleto cadastrado
-          </Text>
-        </View>
-      )}
+      ListEmptyComponent={() =>
+        !isLoading && (
+          <View className='flex-1 justify-center items-center'>
+            <Text className='font-inter-regular text-body text-lg'>
+              Nenhum boleto {isPayed ? 'pago' : 'cadastrado'}
+            </Text>
+          </View>
+        )
+      }
+      ListFooterComponentClassName='flex-1 justify-center items-center'
+      ListFooterComponent={() =>
+        isLoading && <ActivityIndicator size='large' color={colors.primary} />
+      }
     />
   );
 }

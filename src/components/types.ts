@@ -12,9 +12,11 @@ export type BillListProps = {
   title: string;
   data: BillListItemProps[];
   isPayed?: boolean;
+  isLoading: boolean;
 };
 
 export type BillListItemProps = {
+  id: string;
   title: string;
   expireDate: string;
   amount: number;
