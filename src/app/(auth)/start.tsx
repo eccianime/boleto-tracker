@@ -1,6 +1,6 @@
 import { router } from 'expo-router';
-import { useEffect, useState } from 'react';
-import { BackHandler, Image, Platform, Text, View } from 'react-native';
+import { useState } from 'react';
+import { Image, Text, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 import { LogoSvg, PersonPng } from '@/assets';
@@ -24,15 +24,6 @@ export default function Start() {
       router.navigate('/(tabs)/home');
     }
   };
-
-  useEffect(() => {
-    const backHandler = BackHandler.addEventListener(
-      'hardwareBackPress',
-      () => true
-    );
-
-    return () => backHandler.remove(); // Limpia el evento al desmontar
-  }, []);
 
   return (
     <KeyboardAwareScrollView>

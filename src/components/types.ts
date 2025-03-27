@@ -27,9 +27,16 @@ export type BillListItemProps = {
 
 export type InputProps = TextInputProps & {
   iconName: keyof typeof Ionicons.glyphMap;
+  isError?: boolean;
 };
 
 export type ButtonProps = TouchableOpacityProps & {
   text: string;
   variant: 'primary' | 'secondary';
+};
+
+export type ModalCodeNotFoundProps = {
+  isVisible: boolean;
+  onClose: () => void;
+  restartTimer: () => void;
 };

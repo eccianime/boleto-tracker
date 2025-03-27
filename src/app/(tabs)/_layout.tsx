@@ -6,7 +6,7 @@ import { router, Tabs } from 'expo-router';
 import { FC } from 'react';
 import { SvgProps } from 'react-native-svg';
 import AddBillSvg from '@/assets/svg/add-bill.svg';
-import { Platform, TouchableOpacity, View } from 'react-native';
+import { Platform, Pressable, TouchableOpacity, View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
 type Routes = 'home' | 'history';
@@ -27,11 +27,12 @@ export default function TabLayout() {
           headerShown: false,
           sceneStyle: { backgroundColor: 'white' },
           tabBarLabel: () => null,
+          tabBarButton: (props) => <TouchableOpacity {...(props as any)} />,
           tabBarIcon: ({ focused }) =>
             renderIcon(route.name as Routes, focused),
           tabBarStyle: {
             position: 'absolute',
-            bottom: Platform.select({ ios: 0, android: 30 }),
+            marginBottom: 10,
             backgroundColor: 'transparent',
             borderTopWidth: 0,
             zIndex: 10,
@@ -54,7 +55,7 @@ export default function TabLayout() {
         }}
       />
       <TouchableOpacity
-        className='absolute bottom-12 self-center z-10'
+        className='absolute bottom-8 self-center z-10'
         onPress={() => router.navigate('/(newbill)/capture')}
       >
         <AddBillSvg width={56} height={56} />

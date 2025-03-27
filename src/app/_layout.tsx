@@ -37,6 +37,7 @@ export default function RootLayout() {
           contentStyle: { backgroundColor: 'white' },
         }}
       >
+        <Stack.Screen name='index' />
         <Stack.Screen name='(auth)/start' options={{ gestureEnabled: false }} />
       </Stack>
     </Provider>
