@@ -1,6 +1,5 @@
-import { User } from '@react-native-google-signin/google-signin';
-import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import { AppStateProps } from '../types';
 
 const initialState: AppStateProps = {

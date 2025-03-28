@@ -4,7 +4,7 @@ import { BillCounterProps } from './types';
 
 export default function BillCounter({ count }: BillCounterProps) {
   return (
-    <View className='mx-6 mt-[-40] h-20 rounded-md bg-secondary justify-center items-center flex-row'>
+    <View className='self-center px-8 mt-[-40] h-20 rounded-md bg-secondary justify-center items-center flex-row'>
       <LogoWhiteSvg width={56} height={35} />
       <View className='h-8 border-l border-white mx-6' />
       <View>

@@ -9,10 +9,11 @@ config.transformer = {
   ...transformer,
   babelTransformerPath: require.resolve('react-native-svg-transformer/expo'),
 };
+
 config.resolver = {
   ...resolver,
   assetExts: resolver.assetExts.filter((ext) => ext !== 'svg'),
-  sourceExts: [...resolver.sourceExts, 'svg'],
+  sourceExts: [...resolver.sourceExts, 'svg', 'cjs'],
 };
 
 module.exports = withNativeWind(config, { input: './global.css' });

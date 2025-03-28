@@ -31,8 +31,6 @@ export default function Fill() {
     return currencyFormat(valueWithDecimals);
   };
 
-  console.log(billData.dueDate.split('/').reverse().join('-'));
-
   useEffect(() => {
     if (code) {
       // (async () => {
