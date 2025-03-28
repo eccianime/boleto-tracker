@@ -15,7 +15,7 @@ import {
   DispatchAndErrorProps,
   SignInResponseProps,
   SignUpInputProps,
-  UserInfoProps,
+  UserStateProps,
 } from '../types';
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
 
@@ -45,9 +45,9 @@ export const emailSignIn = createAsyncThunk<
       );
       const userSnap = await getDoc(userRef);
 
-      const userInfo = userSnap.data() as UserInfoProps;
+      const userInfo = userSnap.data() as UserStateProps;
 
-      const userData: UserInfoProps = {
+      const userData: UserStateProps = {
         id: user.uid,
         name: userInfo?.name || 'Usuário',
         givenName: userInfo?.givenName || 'Usuário',
@@ -151,7 +151,7 @@ export const googleSignIn = createAsyncThunk<
     const userData = {
       ...response.data.user,
       from: 'google' as const,
-    } as UserInfoProps;
+    } as UserStateProps;
 
     await dispatch(saveUser(userData)).unwrap();
     dispatch(setUserInfo(response.data.user));
@@ -163,38 +163,39 @@ export const googleSignIn = createAsyncThunk<
   }
 });
 
-const saveUser = createAsyncThunk<void, UserInfoProps, { rejectValue: string }>(
-  'user/saveUser',
-  async (user, { dispatch, rejectWithValue }) => {
-    try {
-      dispatch(setIsLoading(true));
-      const targetUserRef = doc(
-        firestoreDB,
-        'projects',
-        'boleto-tracker',
-        'users',
-        user.id
-      );
-      const targetUser = await getDoc(targetUserRef);
-      if (!targetUser.exists()) {
-        await setDoc(targetUserRef, {
-          id: user.id,
-          name: user.name,
-          email: user.email,
-          photo: user.photo,
-          familyName: user.familyName,
-          givenName: user.givenName,
-          from: user.from,
-          createdAt: new Date().toISOString(),
-        });
-      }
-    } catch (error) {
-      return rejectWithValue(handleError(error));
-    } finally {
-      dispatch(setIsLoading(false));
+const saveUser = createAsyncThunk<
+  void,
+  UserStateProps,
+  { rejectValue: string }
+>('user/saveUser', async (user, { dispatch, rejectWithValue }) => {
+  try {
+    dispatch(setIsLoading(true));
+    const targetUserRef = doc(
+      firestoreDB,
+      'projects',
+      'boleto-tracker',
+      'users',
+      user.id
+    );
+    const targetUser = await getDoc(targetUserRef);
+    if (!targetUser.exists()) {
+      await setDoc(targetUserRef, {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        photo: user.photo,
+        familyName: user.familyName,
+        givenName: user.givenName,
+        from: user.from,
+        createdAt: new Date().toISOString(),
+      });
     }
+  } catch (error) {
+    return rejectWithValue(handleError(error));
+  } finally {
+    dispatch(setIsLoading(false));
   }
-);
+});
 
 export const logOut = createAsyncThunk<void, void, MiddlewareApiConfig>(
   'user/logOut',

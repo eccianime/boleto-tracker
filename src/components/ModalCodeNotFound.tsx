@@ -9,7 +9,7 @@ export default function ModalCodeNotFound({
   restartTimer,
 }: ModalCodeNotFoundProps) {
   return (
-    <Modal visible={isVisible} animationType='fade' transparent>
+    <Modal visible={isVisible} animationType='slide' transparent>
       <View className='flex-1 bg-black/50 justify-end'>
         <View className='bg-white h-[180]'>
           <View className='py-10 border-b border-stroke items-center'>

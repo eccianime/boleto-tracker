@@ -91,6 +91,7 @@ export default function Start() {
             onPress={handleEmailSignIn}
           />
           <TouchableOpacity
+            disabled={isLoading}
             className=' h-14 border border-stroke bg-boxes rounded flex-row'
             onPress={handleGoogleSignIn}
           >

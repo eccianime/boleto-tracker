@@ -107,9 +107,8 @@ export default function Capture() {
   return (
     <CameraView
       ref={cameraRef}
-      className={`flex-1 flex-row ${
-        Platform.OS === 'android' ? ` pb-[${bottom}] ` : ''
-      }`}
+      className={`flex-1 flex-row`}
+      style={Platform.OS === 'android' ? { paddingBottom: bottom } : {}}
       facing={'back'}
       onCameraReady={() => {
         isScanning.current = true;

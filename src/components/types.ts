@@ -1,5 +1,5 @@
-import { TextInputProps, TouchableOpacityProps } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { TextInputProps, TouchableOpacityProps } from 'react-native';
 
 export type HeaderProps = {
   hasExtraHeight?: boolean;
@@ -13,17 +13,24 @@ export type BillCounterProps = {
 
 export type BillListProps = {
   title: string;
-  data: BillListItemProps[];
+  data: readonly BillListItemProps[];
   isPayed?: boolean;
   isLoading: boolean;
 };
 
-export type BillListItemProps = {
+export type BillListItemPropsFirebase = {
+  isPayed: boolean;
+  expireDate: string;
+  createdAt: string;
+};
+
+export type BillListItemProps = BillListItemPropsFirebase & {
   id: string;
   title: string;
-  expireDate: string;
   amount: number;
 };
+
+export type ButtonVariant = 'primary' | 'secondary';
 
 export type InputProps = TextInputProps & {
   iconName: keyof typeof Ionicons.glyphMap;
@@ -32,7 +39,7 @@ export type InputProps = TextInputProps & {
 
 export type ButtonProps = TouchableOpacityProps & {
   text: string;
-  variant: 'primary' | 'secondary';
+  variant: ButtonVariant;
   isLoading?: boolean;
 };
 

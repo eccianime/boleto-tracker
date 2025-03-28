@@ -1,10 +1,13 @@
-import { BillListItemProps } from '@/components/types';
+import {
+  BillListItemProps,
+  BillListItemPropsFirebase,
+} from '@/components/types';
 import { AppDispatch } from './store';
 
 export type AppStateProps = {
   bottomSheet: {
     isVisible: boolean;
-    data: Omit<BillListItemProps, 'expireDate'> | null;
+    data: Omit<BillListItemProps, keyof BillListItemPropsFirebase> | null;
   };
   isLoading: boolean;
 };
@@ -25,7 +28,7 @@ export type DispatchAndErrorProps = {
   dispatch: AppDispatch;
 };
 
-export type UserInfoProps = {
+export type UserStateProps = {
   id: string;
   name: string;
   givenName: string;
@@ -34,4 +37,9 @@ export type UserInfoProps = {
   photo: string;
   from: 'app' | 'google';
   createdAt: string;
+};
+
+export type BillStateProps = {
+  current: BillListItemProps[];
+  history: BillListItemProps[];
 };

@@ -1,12 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit';
 
-import userReducer from './slices/userSlice';
 import appReducer from './slices/appSlice';
+import userReducer from './slices/userSlice';
+import billReducer from './slices/billSlice';
 
 export const store = configureStore({
   reducer: {
     app: appReducer,
     user: userReducer,
+    bill: billReducer,
   },
 });
 

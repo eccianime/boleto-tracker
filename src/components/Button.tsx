@@ -1,6 +1,6 @@
 import { Text, TouchableOpacity } from 'react-native';
 import { ButtonProps } from './types';
-import { EvilIcons, FontAwesome, Ionicons } from '@expo/vector-icons';
+import { FontAwesome } from '@expo/vector-icons';
 
 export default function Button({
   text,
@@ -8,12 +8,13 @@ export default function Button({
   isLoading,
   ...props
 }: ButtonProps) {
-  const bgColor =
-    variant === 'primary' ? 'bg-primary' : 'border bg-boxes border-stroke';
-  const textColor =
-    variant === 'primary'
-      ? 'text-white font-lexend-semibold'
-      : 'text-secondary';
+  const isPrimary = variant === 'primary';
+  const bgColor = isPrimary ? 'bg-primary' : 'border bg-boxes border-stroke';
+  const textColor = isPrimary
+    ? 'text-white font-lexend-semibold'
+    : 'text-secondary';
+  const spinnerColor = isPrimary ? 'white' : '#555'; // Ajusta el color secundario según tu paleta
+
   return (
     <TouchableOpacity
       disabled={isLoading}
@@ -24,7 +25,7 @@ export default function Button({
         <FontAwesome
           name='spinner'
           size={24}
-          color='white'
+          color={spinnerColor}
           className='animate-spin'
         />
       ) : (
