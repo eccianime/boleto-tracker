@@ -16,27 +16,7 @@ export const currencyFormat = (value: number | string) => {
 export const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } =
   Dimensions.get('screen');
 
-export const isValidDate = (dateString: string): boolean => {
-  const datePattern = /^(\d{2})\/(\d{2})\/(\d{4})$/;
-  const match = dateString.match(datePattern);
-
-  if (!match) return false;
-
-  const [, day, month, year] = match;
-
-  const dayNum = parseInt(day, 10);
-  const monthNum = parseInt(month, 10);
-  const yearNum = parseInt(year, 10);
-
-  if (monthNum < 1 || monthNum > 12 || yearNum < 1000 || yearNum > 9999) {
-    return false;
-  }
-
-  const daysInMonth = new Date(yearNum, monthNum, 0).getDate();
-
-  if (dayNum < 1 || dayNum > daysInMonth) {
-    return false;
-  }
-
-  return true;
+export const formatDateDMY = (date: string) => {
+  const [day, month, year] = date.split('/');
+  return `${day.padStart(2, '0')}/${month.padStart(2, '0')}/${year}`;
 };

@@ -1,0 +1,51 @@
+{
+  "project_info": {
+    "project_number": "665566344654",
+    "firebase_url": "https://app-03-library-default-rtdb.firebaseio.com",
+    "project_id": "app-03-library",
+    "storage_bucket": "app-03-library.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:665566344654:android:89728cc5630cd962d9279f",
+        "android_client_info": {
+          "package_name": "com.ingjeanpaulrojas.payflowrn"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "665566344654-geshp9tapnr97k0m2i3n6835rvu2l4rl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ingjeanpaulrojas.payflowrn",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAaeggRN3LvGfHtRUXN4fciRodOVnm8lJ0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "665566344654-kg8jpf6b0muuhfgrprs95g82f1cn1lmq.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "665566344654-6h43s71gj4e37l39o1i0q2qpkmm8t460.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.ingjeanpaulrojas.payflowrn"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

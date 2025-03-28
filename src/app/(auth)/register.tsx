@@ -3,13 +3,20 @@ import Input from '@/components/Input';
 import colors from '@/config/colors';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
-import { View, Text, TouchableOpacity, Pressable } from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Pressable,
+  StatusBar,
+} from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 export default function Register() {
   return (
     <KeyboardAwareScrollView>
-      <View className='flex-1 m-6'>
+      <StatusBar barStyle={'dark-content'} />
+      <View className='flex-1 m-6 mt-[60]'>
         <TouchableOpacity onPress={router.back}>
           <Ionicons name={'arrow-back'} size={24} color={colors.inputs} />
         </TouchableOpacity>

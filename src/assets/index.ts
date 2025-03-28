@@ -5,5 +5,6 @@ export { default as HomeActiveSvg } from './svg/home-active.svg';
 export { default as HistorySvg } from './svg/history.svg';
 export { default as HistoryActiveSvg } from './svg/history-active.svg';
 export { default as AddBillSvg } from './svg/add-bill.svg';
+export { default as GoogleSvg } from './svg/google.svg';
 
 export { default as PersonPng } from './images/person.png';

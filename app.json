@@ -19,6 +19,7 @@
       "bundleIdentifier": "com.ingjeanpaulrojas.payflowrn"
     },
     "android": {
+      "googleServicesFile": "./src/config/google-services.json",
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -39,7 +40,10 @@
       [
         "expo-splash-screen",
         {
-          "backgroundColor": "#000000"
+          "image": "./src/assets/images/splash.png",
+          "backgroundColor": "#FFFFFF",
+          "resizeMode": "contain",
+          "imageWidth": 800
         }
       ],
       [
@@ -54,6 +58,12 @@
         "expo-screen-orientation",
         {
           "initialOrientation": "DEFAULT"
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app accesses your photos to let you share them with your friends."
         }
       ]
     ],

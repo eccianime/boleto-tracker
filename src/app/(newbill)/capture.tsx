@@ -1,30 +1,23 @@
+import ModalCodeNotFound from '@/components/ModalCodeNotFound';
+import { Ionicons } from '@expo/vector-icons';
 import {
-  View,
-  Text,
-  TouchableOpacity,
+  BarcodeScanningResult,
+  CameraView,
+  useCameraPermissions,
+} from 'expo-camera';
+import { router, useFocusEffect } from 'expo-router';
+import * as ScreenOrientation from 'expo-screen-orientation';
+import { cssInterop } from 'nativewind';
+import { useCallback, useRef, useState } from 'react';
+import {
   Platform,
   StatusBar,
+  Text,
+  TouchableHighlight,
+  TouchableOpacity,
+  View,
 } from 'react-native';
-import {
-  CameraView,
-  CameraType,
-  useCameraPermissions,
-  BarcodeScanningResult,
-} from 'expo-camera';
-import { cssInterop } from 'nativewind';
-import * as ScreenOrientation from 'expo-screen-orientation';
-import {
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from 'react';
-import { SCREEN_HEIGHT, SCREEN_WIDTH } from '@/utils';
-import { router, useFocusEffect } from 'expo-router';
-import { Ionicons } from '@expo/vector-icons';
-import colors from '@/config/colors';
-import ModalCodeNotFound from '@/components/ModalCodeNotFound';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 cssInterop(CameraView, {
   className: 'style',
@@ -36,6 +29,8 @@ export default function Capture() {
   const cameraRef = useRef<CameraView>(null);
   const [isModalVisible, setModalVisible] = useState(false);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
+
+  const { bottom } = useSafeAreaInsets();
 
   const startTimer = useCallback(() => {
     isScanning.current = true;
@@ -112,7 +107,9 @@ export default function Capture() {
   return (
     <CameraView
       ref={cameraRef}
-      className='flex-1 flex-row'
+      className={`flex-1 flex-row ${
+        Platform.OS === 'android' ? ` pb-[${bottom}] ` : ''
+      }`}
       facing={'back'}
       onCameraReady={() => {
         isScanning.current = true;
@@ -134,7 +131,7 @@ export default function Capture() {
           </Text>
         </View>
         <View className={`mt-auto h-14 bg-[rgba(0,0,0,.7)]`} />
-        <TouchableOpacity
+        <TouchableHighlight
           onPress={() => router.navigate(`/(newbill)/fill`)}
           className={`bg-white items-center  ${
             Platform.OS === 'ios' ? 'pt-4 h-[70]' : 'justify-center h-16'
@@ -143,7 +140,7 @@ export default function Capture() {
           <Text className='font-inter-regular text-xl text-heading'>
             Inserir código do boleto
           </Text>
-        </TouchableOpacity>
+        </TouchableHighlight>
       </View>
       <ModalCodeNotFound
         isVisible={isModalVisible}
