@@ -1,9 +1,10 @@
 import { router } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { useRef, useState } from 'react';
 import {
-  BackHandler,
+  Alert,
   Image,
-  Platform,
+  Keyboard,
+  ScrollView,
   Text,
   TouchableOpacity,
   View,
@@ -13,43 +14,46 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { GoogleSvg, LogoSvg, PersonPng } from '@/assets';
 import Button from '@/components/Button';
 import Input from '@/components/Input';
-import { useAppDispatch } from '@/hooks';
-import {
-  emailSignIn,
-  googleSignIn,
-  SignInResponseProps,
-} from '@/redux/actions';
+import { useAppDispatch, useAppSelector } from '@/hooks';
+import { emailSignIn, googleSignIn } from '@/redux/actions';
 import { StatusBar } from 'expo-status-bar';
 
 export default function Start() {
   const dispatch = useAppDispatch();
+
+  const { isLoading } = useAppSelector((state) => state.app);
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   });
 
   const handleEmailSignIn = async () => {
-    const result = await dispatch(emailSignIn(formData));
-    if (emailSignIn.fulfilled.match(result)) {
-      const payload = result.payload as SignInResponseProps;
-      if (payload.success) {
-        router.navigate('/(tabs)/home');
+    try {
+      const result = await dispatch(emailSignIn(formData)).unwrap();
+      if (result.success) {
+        router.replace('/(tabs)/home');
       }
+    } catch (error) {
+      Alert.alert(
+        'Atenção',
+        'As credenciais inseridas são inválidas. Por favor, tente novamente.'
+      );
     }
   };
 
   const handleGoogleSignIn = async () => {
-    const result = await dispatch(googleSignIn());
-    if (googleSignIn.fulfilled.match(result)) {
-      const payload = result.payload as SignInResponseProps;
-      if (payload.success) {
-        router.navigate('/(tabs)/home');
+    try {
+      const result = await dispatch(googleSignIn()).unwrap();
+      if (result.success) {
+        router.replace('/(tabs)/home');
       }
+    } catch (error) {
+      Alert.alert('Atenção', `Ocorreu um erro: ${error}`);
     }
   };
 
   return (
-    <KeyboardAwareScrollView>
+    <KeyboardAwareScrollView className='flex-grow'>
       <StatusBar style={'light'} translucent />
       <View className='bg-primary h-[270]' />
       <Image
@@ -57,10 +61,10 @@ export default function Start() {
         source={PersonPng}
       />
       <View className='mt-[100]'>
-        <View className='items-center mb-6'>
+        <View className='items-center'>
           <LogoSvg width={100} height={61} />
         </View>
-        <Text className='text-center text-4xl text-heading font-lexend-semibold mb-10'>
+        <Text className='text-center text-4xl text-heading font-lexend-semibold my-4'>
           {'Organize seus\nboletos em um\nsó lugar'}
         </Text>
         <View className='mx-6'>
@@ -76,13 +80,14 @@ export default function Start() {
             secureTextEntry
             value={formData.password}
             onChangeText={(password) => setFormData({ ...formData, password })}
+            onSubmitEditing={Keyboard.dismiss}
           />
         </View>
         <View className='mx-6 gap-2'>
           <Button
             text='Entrar'
             variant='primary'
-            // onPress={() => router.navigate('/(tabs)/home')}
+            isLoading={isLoading}
             onPress={handleEmailSignIn}
           />
           <TouchableOpacity

@@ -17,7 +17,7 @@ export default function Header({ hasExtraHeight, name, photo }: HeaderProps) {
       {
         text: 'Sair',
         onPress: () => {
-          router.navigate('/(auth)/start');
+          router.replace('/(auth)/start');
           dispatch(logOut());
         },
       },
@@ -29,19 +29,22 @@ export default function Header({ hasExtraHeight, name, photo }: HeaderProps) {
         hasExtraHeight ? 'h-[180]' : 'h-[150]'
       }  bg-primary flex-row justify-between px-6 pt-16`}
     >
-      <View className='flex-row gap-2'>
+      <View className='flex-row gap-3 flex-1'>
         {photo ? (
           <Image
             source={{ uri: photo }}
-            className='rounded-md w-12 h-12 mt-2'
+            className='rounded-md w-12 h-12 mt-2 bg-white'
           />
         ) : (
-          <View className='w-12 h-12 bg-white rounded-md'>
+          <View className='w-12 h-12 bg-white rounded-md items-center justify-center mt-2'>
             <Ionicons name='person' size={24} color='black' />
           </View>
         )}
-        <View className='gap-1'>
-          <Text className='font-lexend-regular text-white text-2xl'>
+        <View className='gap-1 flex-1'>
+          <Text
+            className='font-lexend-regular text-white text-2xl'
+            numberOfLines={1}
+          >
             Olá, <Text className='font-lexend-semibold'>{name}</Text>
           </Text>
           <Text className='text-white font-inter-regular text-lg'>

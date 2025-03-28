@@ -33,6 +33,7 @@ export type InputProps = TextInputProps & {
 export type ButtonProps = TouchableOpacityProps & {
   text: string;
   variant: 'primary' | 'secondary';
+  isLoading?: boolean;
 };
 
 export type ModalCodeNotFoundProps = {

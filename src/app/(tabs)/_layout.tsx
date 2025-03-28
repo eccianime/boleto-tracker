@@ -8,6 +8,7 @@ import { SvgProps } from 'react-native-svg';
 import AddBillSvg from '@/assets/svg/add-bill.svg';
 import { Platform, Pressable, TouchableOpacity, View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { StatusBar } from 'expo-status-bar';
 
 type Routes = 'home' | 'history';
 
@@ -22,6 +23,7 @@ export default function TabLayout() {
   };
   return (
     <>
+      <StatusBar translucent />
       <Tabs
         screenOptions={({ route }) => ({
           headerShown: false,

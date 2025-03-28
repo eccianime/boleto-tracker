@@ -22,9 +22,12 @@ export const appSlice = createSlice({
       state.bottomSheet.isVisible = isVisible;
       state.bottomSheet.data = data;
     },
+    setIsLoading: (state, action: PayloadAction<boolean>) => {
+      state.isLoading = action.payload;
+    },
   },
 });
 
-export const { setBottomSheetVisible } = appSlice.actions;
+export const { setBottomSheetVisible, setIsLoading } = appSlice.actions;
 
 export default appSlice.reducer;

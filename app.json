@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "Pay Flow",
-    "slug": "payflow-rn",
+    "name": "BoletoTracker",
+    "slug": "boletotracker",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./src/assets/images/icon.png",
-    "scheme": "payflow",
+    "scheme": "boletotracker",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
@@ -16,7 +16,7 @@
         "light": "./src/assets/images/icon.png",
         "tinted": "./src/assets/images/icon.png"
       },
-      "bundleIdentifier": "com.ingjeanpaulrojas.payflowrn"
+      "bundleIdentifier": "com.ingjeanpaulrojas.boletotracker"
     },
     "android": {
       "googleServicesFile": "./src/config/google-services.json",
@@ -24,7 +24,7 @@
         "foregroundImage": "./src/assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.ingjeanpaulrojas.payflowrn",
+      "package": "com.ingjeanpaulrojas.boletotracker",
       "permissions": [
         "android.permission.CAMERA",
         "android.permission.RECORD_AUDIO"
@@ -73,9 +73,6 @@
     "extra": {
       "router": {
         "origin": false
-      },
-      "eas": {
-        "projectId": "335af814-fec2-473b-b697-65ca80fa7436"
       }
     }
   }
