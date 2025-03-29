@@ -38,7 +38,6 @@ export default function RootLayout() {
         }}
       >
         <Stack.Screen name='index' />
-        <Stack.Screen name='(auth)/start' options={{ gestureEnabled: false }} />
       </Stack>
     </Provider>
   );

@@ -49,3 +49,8 @@ export type ModalCodeNotFoundProps = {
   onClose: () => void;
   restartTimer: () => void;
 };
+
+export type BottomSheetProps = {
+  isVisible: boolean;
+  data: Omit<BillListItemProps, keyof BillListItemPropsFirebase> | null;
+};

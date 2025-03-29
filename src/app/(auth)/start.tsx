@@ -1,10 +1,9 @@
 import { router } from 'expo-router';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import {
   Alert,
   Image,
   Keyboard,
-  ScrollView,
   Text,
   TouchableOpacity,
   View,
@@ -53,7 +52,7 @@ export default function Start() {
   };
 
   return (
-    <KeyboardAwareScrollView className='flex-grow'>
+    <KeyboardAwareScrollView contentContainerClassName='flex-grow'>
       <StatusBar style={'light'} translucent />
       <View className='bg-primary h-[270]' />
       <Image
@@ -65,7 +64,7 @@ export default function Start() {
           <LogoSvg width={100} height={61} />
         </View>
         <Text className='text-center text-4xl text-heading font-lexend-semibold my-4'>
-          {'Organize seus\nboletos em um\nsó lugar'}
+          {'Organize seus boletos\nem um só lugar'}
         </Text>
         <View className='mx-6'>
           <Input

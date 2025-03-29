@@ -6,6 +6,7 @@ export default function Button({
   text,
   variant,
   isLoading,
+  className,
   ...props
 }: ButtonProps) {
   const isPrimary = variant === 'primary';
@@ -18,7 +19,7 @@ export default function Button({
   return (
     <TouchableOpacity
       disabled={isLoading}
-      className={`h-14 rounded-md items-center justify-center ${bgColor}`}
+      className={`h-14 rounded-md items-center justify-center ${bgColor} ${className}`}
       {...props}
     >
       {isLoading ? (

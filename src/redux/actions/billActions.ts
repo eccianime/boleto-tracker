@@ -1,8 +1,14 @@
 import { BillListItemProps } from '@/components/types';
 import { firestoreDB } from '@/config/firebase';
 import { generateId, handleError } from '@/utils';
-import { createAsyncThunk, Dispatch } from '@reduxjs/toolkit';
-import { collection, doc, getDocs, setDoc } from 'firebase/firestore';
+import { AnyAction, createAsyncThunk, Dispatch } from '@reduxjs/toolkit';
+import {
+  collection,
+  deleteDoc,
+  doc,
+  getDocs,
+  setDoc,
+} from 'firebase/firestore';
 import { setIsLoading, setMyBills } from '../slices';
 import { RootState } from '../store';
 import { BillRegisterInputProps, SuccessResponseProps } from '../types';
@@ -27,10 +33,11 @@ export const getBills = createAsyncThunk<
 
     const querySnapshot = await getDocs(billRef);
 
+    let data: BillListItemProps[] = [];
     if (querySnapshot.docs.length > 0) {
-      const data = querySnapshot.docs.map((doc) => doc.data());
-      dispatch(setMyBills(data as BillListItemProps[]));
+      data = querySnapshot.docs.map((doc) => doc.data()) as BillListItemProps[];
     }
+    await dispatch(setMyBills(data as BillListItemProps[]));
   } catch (error) {
     return rejectWithValue(handleError(error));
   } finally {
@@ -81,3 +88,31 @@ export const registerBill = createAsyncThunk<
     }
   }
 );
+
+export const deleteBill = createAsyncThunk<
+  SuccessResponseProps,
+  string | undefined,
+  { rejectValue: string; getState: () => RootState; dispatch: Dispatch<any> }
+>('bill/deleteBill', async (id, { dispatch, rejectWithValue, getState }) => {
+  try {
+    dispatch(setIsLoading(true));
+    if (!id) {
+      return rejectWithValue('Não foi possível excluir o boleto');
+    }
+    const userId = (getState() as RootState).user.id;
+    const billRef = doc(
+      firestoreDB,
+      'projects',
+      'boleto-tracker',
+      'users',
+      userId,
+      'bills',
+      id
+    );
+    await deleteDoc(billRef);
+    dispatch(getBills('current'));
+    return { success: true };
+  } catch (error) {
+    return rejectWithValue(handleError(error));
+  }
+});
