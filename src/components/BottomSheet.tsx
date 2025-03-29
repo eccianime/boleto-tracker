@@ -13,21 +13,18 @@ import DeleteSvg from '@/assets/svg/delete.svg';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { setBottomSheetVisible } from '@/redux/slices';
 import { currencyFormat, SCREEN_HEIGHT } from '@/utils';
-import { deleteBill } from '@/redux/actions';
+import { deleteBill, payBill } from '@/redux/actions';
 import Button from './Button';
 
 export default function BottomSheet() {
   const dispatch = useAppDispatch();
   const { data, isVisible } = useAppSelector((state) => state.app.bottomSheet);
-  const [viewHeight, setViewHeight] = useState(0);
 
   const backgroundPosition = useRef(new Animated.Value(SCREEN_HEIGHT)).current;
   const backgroundOpacity = useRef(new Animated.Value(0)).current;
 
-  const bottomViewPosition = useRef(new Animated.Value(SCREEN_HEIGHT)).current;
-
-  const handleClose = () => {
-    dispatch(
+  const handleClose = async () => {
+    await dispatch(
       setBottomSheetVisible({
         isVisible: false,
         data: null,
@@ -46,6 +43,15 @@ export default function BottomSheet() {
       dispatch(deleteBill(data?.id));
     } catch (error) {
       Alert.alert('Atenção', `Ocorreu um erro ao excluir o boleto`);
+    }
+  };
+
+  const handlePayBill = async () => {
+    try {
+      handleClose();
+      await dispatch(payBill(data?.id));
+    } catch (error) {
+      Alert.alert('Atenção', `Ocorreu um erro ao pagar o boleto`);
     }
   };
 
@@ -81,13 +87,11 @@ export default function BottomSheet() {
 
   return (
     <Animated.View
+      pointerEvents={isVisible ? 'auto' : 'none'}
       className='absolute left-0 right-0 bottom-0 bg-black/50 justify-end'
       style={{ top: backgroundPosition, opacity: backgroundOpacity }}
     >
-      <Animated.View
-        className='bg-white absolute left-0 right-0'
-        style={{ bottom: bottomViewPosition }}
-      >
+      <Animated.View className='bg-white absolute left-0 right-0 bottom-0'>
         <View className='h-[2] w-11 mt-3 mb-6 bg-inputs rounded-sm self-center' />
         <View className='mx-6'>
           <Text className='font-lexend-regular text-center text-2xl'>
@@ -105,7 +109,12 @@ export default function BottomSheet() {
               onPress={handleClose}
               className='flex-1'
             />
-            <Button text='Sim' variant='primary' className='flex-1' />
+            <Button
+              text='Sim'
+              variant='primary'
+              className='flex-1'
+              onPress={handlePayBill}
+            />
           </View>
         </View>
         <TouchableOpacity

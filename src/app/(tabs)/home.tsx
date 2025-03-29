@@ -13,10 +13,7 @@ import CustomTabBar from '@/components/CustomTabBar';
 
 export default function Home() {
   const { givenName, photo } = useAppSelector((state) => state.user);
-  const {
-    isLoading,
-    bottomSheet: { data, isVisible },
-  } = useAppSelector((state) => state.app);
+  const { isLoading } = useAppSelector((state) => state.app);
   const { current: myBills } = useAppSelector((state) => state.bill);
   const dispatch = useAppDispatch();
 

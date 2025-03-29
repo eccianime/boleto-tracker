@@ -7,9 +7,11 @@ import {
   deleteDoc,
   doc,
   getDocs,
+  query,
   setDoc,
+  where,
 } from 'firebase/firestore';
-import { setIsLoading, setMyBills } from '../slices';
+import { setHistoryBills, setIsLoading, setMyBills } from '../slices';
 import { RootState } from '../store';
 import { BillRegisterInputProps, SuccessResponseProps } from '../types';
 
@@ -31,13 +33,18 @@ export const getBills = createAsyncThunk<
       'bills'
     );
 
-    const querySnapshot = await getDocs(billRef);
+    const q = query(billRef, where('isPayed', '==', type === 'history'));
+    const querySnapshot = await getDocs(q);
 
     let data: BillListItemProps[] = [];
     if (querySnapshot.docs.length > 0) {
       data = querySnapshot.docs.map((doc) => doc.data()) as BillListItemProps[];
     }
-    await dispatch(setMyBills(data as BillListItemProps[]));
+    if (type === 'history') {
+      dispatch(setHistoryBills(data as BillListItemProps[]));
+    } else {
+      dispatch(setMyBills(data as BillListItemProps[]));
+    }
   } catch (error) {
     return rejectWithValue(handleError(error));
   } finally {
@@ -85,6 +92,40 @@ export const registerBill = createAsyncThunk<
       return rejectWithValue(handleError(error));
     } finally {
       dispatch(setIsLoading(false));
+    }
+  }
+);
+
+export const payBill = createAsyncThunk<
+  SuccessResponseProps,
+  string | undefined,
+  { rejectValue: string; getState: () => RootState; dispatch: Dispatch<any> }
+>(
+  'bill/registerBill',
+  async (billId, { dispatch, rejectWithValue, getState }) => {
+    try {
+      if (!billId) {
+        return rejectWithValue('Não foi possível pagar boleto');
+      }
+      dispatch(setIsLoading(true));
+      const userId = (getState() as RootState).user.id;
+
+      const billRef = doc(
+        firestoreDB,
+        'projects',
+        'boleto-tracker',
+        'users',
+        userId,
+        'bills',
+        billId
+      );
+
+      await setDoc(billRef, { isPayed: true }, { merge: true });
+      dispatch(getBills('current'));
+
+      return { success: true };
+    } catch (error) {
+      return rejectWithValue(handleError(error));
     }
   }
 );
