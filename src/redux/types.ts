@@ -12,7 +12,7 @@ export type AppStateProps = {
   isLoading: boolean;
 };
 
-export type SignInResponseProps = { success: boolean };
+export type SuccessResponseProps = { success: boolean };
 
 export type SignUpInputProps = {
   name: string;
@@ -21,6 +21,13 @@ export type SignUpInputProps = {
   password: string;
   confirmPassword: string;
   photo: string;
+};
+
+export type BillRegisterInputProps = {
+  name: string;
+  dueDate: string;
+  value: string;
+  barCode: string;
 };
 
 export type DispatchAndErrorProps = {

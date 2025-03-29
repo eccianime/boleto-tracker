@@ -1,24 +1,23 @@
 import Button from '@/components/Button';
 import Input from '@/components/Input';
 import colors from '@/config/colors';
-import { currencyFormat, formatDateDMY } from '@/utils';
+import { useAppDispatch, useAppSelector } from '@/hooks';
+import { registerBill } from '@/redux/actions';
+import { BillRegisterInputProps } from '@/redux/types';
+import { currencyFormat, formatDateDMY, isBillFormValid } from '@/utils';
 import { Ionicons } from '@expo/vector-icons';
-import axios from 'axios';
+import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
-import {
-  Pressable,
-  StatusBar,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
+import { Alert, Pressable, Text, TouchableOpacity, View } from 'react-native';
+import { StatusBar } from 'expo-status-bar';
 
 export default function Fill() {
   const { code } = useLocalSearchParams<{ code: string }>();
+  const { isLoading } = useAppSelector((state) => state.app);
+  const dispatch = useAppDispatch();
 
-  const [billData, setBillData] = useState({
+  const [billData, setBillData] = useState<BillRegisterInputProps>({
     name: '',
     dueDate: formatDateDMY(new Date().toLocaleDateString()),
     value: 'R$ 0,00',
@@ -31,30 +30,37 @@ export default function Fill() {
     return currencyFormat(valueWithDecimals);
   };
 
+  const openDatePicker = () => {
+    DateTimePickerAndroid.open({
+      mode: 'date',
+      display: 'calendar',
+      value: new Date(),
+      onChange: (_, date) => {
+        if (date) {
+          setBillData({
+            ...billData,
+            dueDate: formatDateDMY(date.toLocaleDateString()),
+          });
+        }
+      },
+    });
+  };
+
+  const handleSubmit = async () => {
+    try {
+      if (!isBillFormValid(billData)) return;
+
+      const result = await dispatch(registerBill(billData)).unwrap();
+      if (result.success) {
+        router.replace('/(tabs)/home');
+      }
+    } catch (error) {
+      Alert.alert('Atenção', `Ocorreu um erro ao registrar o boleto`);
+    }
+  };
+
   useEffect(() => {
     if (code) {
-      // (async () => {
-      //   try {
-      //     const resp = await axios.post(
-      //       'https://www.veloso.adm.br/checkboleto/php/BoletoWS.php',
-      //       {
-      //         digitado: code,
-      //       }
-      //     );
-
-      //     if (resp.data.length > 0) {
-      //       const { linha_digitavel, valor } = resp.data[0];
-      //       setBillData({
-      //         barCode: linha_digitavel,
-      //         value: currencyFormat(valor),
-      //         dueDate: '',
-      //         name: '',
-      //       });
-      //     }
-      //   } catch (error) {
-      //     console.log(error);
-      //   }
-      // })();
       setBillData({
         ...billData,
         barCode: code,
@@ -64,7 +70,7 @@ export default function Fill() {
 
   return (
     <View className='flex-grow'>
-      <StatusBar hidden={false} barStyle={'dark-content'} />
+      <StatusBar hidden={false} style={'dark'} />
       <View className='flex-grow m-6 mt-[80]'>
         <TouchableOpacity onPress={router.back}>
           <Ionicons name={'arrow-back'} size={24} color={colors.inputs} />
@@ -77,35 +83,27 @@ export default function Fill() {
             iconName='document-outline'
             placeholder='Nome do boleto'
             value={billData.name}
-            onChangeText={(name: string) => setBillData({ ...billData, name })}
-          />
-          <Pressable
-            onPress={() =>
-              DateTimePickerAndroid.open({
-                mode: 'date',
-                display: 'calendar',
-                value: new Date(),
-                onChange: (_, date) => {
-                  if (date) {
-                    setBillData({
-                      ...billData,
-                      dueDate: formatDateDMY(date.toLocaleDateString()),
-                    });
-                  }
-                },
-              })
+            onChangeText={(name: string) =>
+              setBillData((prev) => ({ ...prev, name }))
             }
+            accessibilityLabel='Nome do boleto'
+          />
+
+          <Pressable
+            onPress={openDatePicker}
+            accessibilityLabel='Selecionar data de vencimento'
+            accessibilityRole='button'
           >
             <Input
               iconName='calendar-outline'
               readOnly
               placeholder='Vencimento'
               value={billData.dueDate}
-              onChangeText={(dueDate: string) =>
-                setBillData({ ...billData, dueDate: formatDateDMY(dueDate) })
-              }
+              onChangeText={() => {}} // Handled by date picker
+              accessibilityLabel='Data de vencimento'
             />
           </Pressable>
+
           <Input
             iconName='wallet-outline'
             placeholder='Valor do boleto'
@@ -116,22 +114,39 @@ export default function Fill() {
             }}
             value={billData.value}
             onChangeText={(value: string) =>
-              setBillData({ ...billData, value: handleCurrency(value) })
+              setBillData((prev) => ({ ...prev, value: handleCurrency(value) }))
             }
+            accessibilityLabel='Valor do boleto'
           />
+
           <Input
             iconName='barcode-outline'
             placeholder='Código de barras'
             keyboardType='phone-pad'
             value={billData.barCode}
             onChangeText={(barCode: string) =>
-              setBillData({ ...billData, barCode })
+              setBillData((prev) => ({
+                ...prev,
+                barCode: barCode.replace(/\D/g, ''),
+              }))
             }
+            accessibilityLabel='Código de barras'
+            accessibilityHint='Digite o código de barras do boleto'
           />
         </View>
         <View className='mt-4 gap-4'>
-          <Button text='Registrar' variant='primary' />
-          <Button text='Cancelar' variant='secondary' onPress={router.back} />
+          <Button
+            text='Registrar'
+            variant='primary'
+            isLoading={isLoading}
+            onPress={handleSubmit}
+          />
+          <Button
+            text='Cancelar'
+            variant='secondary'
+            onPress={router.back}
+            disabled={isLoading}
+          />
         </View>
       </View>
     </View>

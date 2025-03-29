@@ -1,4 +1,4 @@
-import { SignUpInputProps } from '@/redux/types';
+import { BillRegisterInputProps, SignUpInputProps } from '@/redux/types';
 import { Alert, Dimensions } from 'react-native';
 
 export const currencyFormat = (value: number | string) => {
@@ -18,11 +18,11 @@ export const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } =
   Dimensions.get('screen');
 
 export const formatDateDMY = (date: string) => {
-  const [day, month, year] = date.split('/');
+  const [month, day, year] = date.split('/');
   return `${day.padStart(2, '0')}/${month.padStart(2, '0')}/${year}`;
 };
 
-export const isAllFieldsValid = (data: SignUpInputProps) => {
+export const isUserFormValid = (data: SignUpInputProps) => {
   const { name, lastName, email, password, confirmPassword } = data;
 
   const errors: string[] = [];
@@ -75,8 +75,38 @@ export const isValidPassword = (
   return null;
 };
 
+export const isBillFormValid = (data: BillRegisterInputProps) => {
+  const { name, value, barCode } = data;
+
+  const errors: string[] = [];
+
+  if (name.trim().length < 3) {
+    errors.push('Insira um nome maior que 3 caracteres.');
+  }
+
+  if (Number(value.replace(/\D/g, '')) / 100 < 1) {
+    errors.push('Informe um valor maior que R$ 1,00.');
+  }
+  if (barCode.trim().length === 0) {
+    errors.push('Insira o código de barras do boleto.');
+  }
+
+  if (errors.length > 0) {
+    Alert.alert('Atenção', errors.join('\n'));
+    return false;
+  }
+
+  return true;
+};
+
 export const handleError = (error: unknown): string => {
   if (error instanceof Error) return error.message;
   if (typeof error === 'string') return error;
   return 'Ocorreu um erro inesperado.';
+};
+
+export const generateId = () => {
+  const timestamp = Date.now().toString(36);
+  const randomStr = Math.random().toString(36).substring(2, 8);
+  return `${timestamp}-${randomStr}`;
 };

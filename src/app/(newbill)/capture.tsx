@@ -11,13 +11,13 @@ import { cssInterop } from 'nativewind';
 import { useCallback, useRef, useState } from 'react';
 import {
   Platform,
-  StatusBar,
   Text,
   TouchableHighlight,
   TouchableOpacity,
   View,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { StatusBar } from 'expo-status-bar';
 
 cssInterop(CameraView, {
   className: 'style',

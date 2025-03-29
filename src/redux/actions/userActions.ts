@@ -13,7 +13,7 @@ import { setIsLoading } from '../slices';
 import { setUserInfo } from '../slices/userSlice';
 import {
   DispatchAndErrorProps,
-  SignInResponseProps,
+  SuccessResponseProps,
   SignUpInputProps,
   UserStateProps,
 } from '../types';
@@ -22,7 +22,7 @@ import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
 GoogleSignin.configure();
 
 export const emailSignIn = createAsyncThunk<
-  SignInResponseProps,
+  SuccessResponseProps,
   { email: string; password: string },
   DispatchAndErrorProps
 >(
@@ -70,7 +70,7 @@ export const emailSignIn = createAsyncThunk<
 );
 
 export const emailRegister = createAsyncThunk<
-  SignInResponseProps,
+  SuccessResponseProps,
   SignUpInputProps,
   DispatchAndErrorProps
 >(
@@ -136,7 +136,7 @@ export const emailRegister = createAsyncThunk<
 );
 
 export const googleSignIn = createAsyncThunk<
-  SignInResponseProps,
+  SuccessResponseProps,
   void,
   { rejectValue: string }
 >('user/googleSignIn', async (_, { dispatch, rejectWithValue }) => {

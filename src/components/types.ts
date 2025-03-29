@@ -22,6 +22,7 @@ export type BillListItemPropsFirebase = {
   isPayed: boolean;
   expireDate: string;
   createdAt: string;
+  barCode: string;
 };
 
 export type BillListItemProps = BillListItemPropsFirebase & {

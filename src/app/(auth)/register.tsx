@@ -3,21 +3,14 @@ import Input from '@/components/Input';
 import colors from '@/config/colors';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { emailRegister } from '@/redux/actions';
-import { SignInResponseProps } from '@/redux/types';
-import { isAllFieldsValid } from '@/utils';
+import { isUserFormValid } from '@/utils';
 import { Ionicons } from '@expo/vector-icons';
+import * as ImagePicker from 'expo-image-picker';
 import { router } from 'expo-router';
 import { useState } from 'react';
-import {
-  Alert,
-  Image,
-  StatusBar,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { Alert, Image, Text, TouchableOpacity, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import * as ImagePicker from 'expo-image-picker';
+import { StatusBar } from 'expo-status-bar';
 
 export default function Register() {
   const dispatch = useAppDispatch();
@@ -34,7 +27,7 @@ export default function Register() {
 
   const handleRegister = async () => {
     try {
-      if (!isAllFieldsValid(formData)) return;
+      if (!isUserFormValid(formData)) return;
 
       const result = await dispatch(emailRegister(formData)).unwrap();
       if (result.success) {
@@ -60,7 +53,7 @@ export default function Register() {
 
   return (
     <KeyboardAwareScrollView>
-      <StatusBar barStyle={'dark-content'} translucent={false} />
+      <StatusBar style={'dark'} translucent={false} />
       <View className='flex-1 m-6 mt-8'>
         <TouchableOpacity onPress={router.back}>
           <Ionicons name={'arrow-back'} size={24} color={colors.inputs} />
