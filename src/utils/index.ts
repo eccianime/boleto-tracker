@@ -110,3 +110,6 @@ export const generateId = () => {
   const randomStr = Math.random().toString(36).substring(2, 8);
   return `${timestamp}-${randomStr}`;
 };
+
+export const formatCurrencyToNumber = (value: string) =>
+  Number(value.replace(/\D/g, '')) / 100;

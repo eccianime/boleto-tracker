@@ -40,7 +40,7 @@ export default function BottomSheet() {
           data: null,
         })
       );
-      dispatch(deleteBill(data?.id));
+      dispatch(deleteBill(data?.id || ''));
     } catch (error) {
       Alert.alert('Atenção', `Ocorreu um erro ao excluir o boleto`);
     }
@@ -49,7 +49,7 @@ export default function BottomSheet() {
   const handlePayBill = async () => {
     try {
       handleClose();
-      await dispatch(payBill(data?.id));
+      await dispatch(payBill(data?.id || ''));
     } catch (error) {
       Alert.alert('Atenção', `Ocorreu um erro ao pagar o boleto`);
     }

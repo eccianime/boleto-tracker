@@ -29,6 +29,7 @@ export type BillListItemProps = BillListItemPropsFirebase & {
   id: string;
   title: string;
   amount: number;
+  handleShowBottomSheet?: VoidFunction;
 };
 
 export type ButtonVariant = 'primary' | 'secondary';

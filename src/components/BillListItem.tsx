@@ -1,26 +1,14 @@
-import { View, Text, TouchableOpacity } from 'react-native';
-import { BillListItemProps } from './types';
 import { currencyFormat } from '@/utils';
-import { useAppDispatch } from '@/hooks';
-import { setBottomSheetVisible } from '@/redux/slices';
+import { Text, TouchableOpacity, View } from 'react-native';
+import { BillListItemProps } from './types';
 
 export default function BillListItem({
   id,
   title,
   expireDate,
   amount,
+  handleShowBottomSheet,
 }: BillListItemProps) {
-  const dispatch = useAppDispatch();
-
-  const handleShowBottomSheet = () => {
-    const data = {
-      id,
-      title,
-      amount,
-    };
-    dispatch(setBottomSheetVisible({ isVisible: true, data }));
-  };
-
   return (
     <TouchableOpacity
       className='flex-row justify-between mb-8'

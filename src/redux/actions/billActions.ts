@@ -1,6 +1,6 @@
 import { BillListItemProps } from '@/components/types';
 import { firestoreDB } from '@/config/firebase';
-import { generateId, handleError } from '@/utils';
+import { formatCurrencyToNumber, generateId, handleError } from '@/utils';
 import { AnyAction, createAsyncThunk, Dispatch } from '@reduxjs/toolkit';
 import {
   collection,
@@ -15,6 +15,27 @@ import { setHistoryBills, setIsLoading, setMyBills } from '../slices';
 import { RootState } from '../store';
 import { BillRegisterInputProps, SuccessResponseProps } from '../types';
 
+const getBillsRef = (userId: string) =>
+  collection(
+    firestoreDB,
+    'projects',
+    'boleto-tracker',
+    'users',
+    userId,
+    'bills'
+  );
+
+const getBillDocRef = (userId: string, billId: string) =>
+  doc(
+    firestoreDB,
+    'projects',
+    'boleto-tracker',
+    'users',
+    userId,
+    'bills',
+    billId
+  );
+
 export const getBills = createAsyncThunk<
   void,
   'current' | 'history',
@@ -24,27 +45,17 @@ export const getBills = createAsyncThunk<
     dispatch(setIsLoading(true));
 
     const userId = (getState() as RootState).user.id;
-    const billRef = collection(
-      firestoreDB,
-      'projects',
-      'boleto-tracker',
-      'users',
-      userId,
-      'bills'
+    const q = query(
+      getBillsRef(userId),
+      where('isPayed', '==', type === 'history')
     );
 
-    const q = query(billRef, where('isPayed', '==', type === 'history'));
     const querySnapshot = await getDocs(q);
+    const data = querySnapshot.docs.map(
+      (doc) => doc.data() as BillListItemProps
+    );
 
-    let data: BillListItemProps[] = [];
-    if (querySnapshot.docs.length > 0) {
-      data = querySnapshot.docs.map((doc) => doc.data()) as BillListItemProps[];
-    }
-    if (type === 'history') {
-      dispatch(setHistoryBills(data as BillListItemProps[]));
-    } else {
-      dispatch(setMyBills(data as BillListItemProps[]));
-    }
+    dispatch(type === 'history' ? setHistoryBills(data) : setMyBills(data));
   } catch (error) {
     return rejectWithValue(handleError(error));
   } finally {
@@ -64,28 +75,20 @@ export const registerBill = createAsyncThunk<
   ) => {
     try {
       dispatch(setIsLoading(true));
-      const unformattedNumber = Number(value.replace(/\D/g, '')) / 100;
       const userId = (getState() as RootState).user.id;
-
       const billId = generateId();
-      const billRef = doc(
-        firestoreDB,
-        'projects',
-        'boleto-tracker',
-        'users',
-        userId,
-        'bills',
-        billId
-      );
+      const billRef = getBillDocRef(userId, billId);
+
       const bill: BillListItemProps = {
         id: billId,
         title: name,
-        amount: unformattedNumber,
+        amount: formatCurrencyToNumber(value),
         expireDate: dueDate,
         barCode,
         createdAt: new Date().toISOString(),
         isPayed: false,
       };
+
       await setDoc(billRef, bill);
       return { success: true };
     } catch (error) {
@@ -98,29 +101,22 @@ export const registerBill = createAsyncThunk<
 
 export const payBill = createAsyncThunk<
   SuccessResponseProps,
-  string | undefined,
+  string,
   { rejectValue: string; getState: () => RootState; dispatch: Dispatch<any> }
 >(
-  'bill/registerBill',
+  'bill/payBill', // 🔴 Se corrigió aquí
   async (billId, { dispatch, rejectWithValue, getState }) => {
     try {
-      if (!billId) {
-        return rejectWithValue('Não foi possível pagar boleto');
-      }
+      if (!billId) return rejectWithValue('Não foi possível pagar boleto');
+
       dispatch(setIsLoading(true));
       const userId = (getState() as RootState).user.id;
 
-      const billRef = doc(
-        firestoreDB,
-        'projects',
-        'boleto-tracker',
-        'users',
-        userId,
-        'bills',
-        billId
+      await setDoc(
+        getBillDocRef(userId, billId),
+        { isPayed: true },
+        { merge: true }
       );
-
-      await setDoc(billRef, { isPayed: true }, { merge: true });
       dispatch(getBills('current'));
 
       return { success: true };
@@ -132,28 +128,22 @@ export const payBill = createAsyncThunk<
 
 export const deleteBill = createAsyncThunk<
   SuccessResponseProps,
-  string | undefined,
+  string,
   { rejectValue: string; getState: () => RootState; dispatch: Dispatch<any> }
 >('bill/deleteBill', async (id, { dispatch, rejectWithValue, getState }) => {
   try {
+    if (!id) return rejectWithValue('Não foi possível excluir o boleto');
+
     dispatch(setIsLoading(true));
-    if (!id) {
-      return rejectWithValue('Não foi possível excluir o boleto');
-    }
     const userId = (getState() as RootState).user.id;
-    const billRef = doc(
-      firestoreDB,
-      'projects',
-      'boleto-tracker',
-      'users',
-      userId,
-      'bills',
-      id
-    );
-    await deleteDoc(billRef);
+
+    await deleteDoc(getBillDocRef(userId, id));
     dispatch(getBills('current'));
+
     return { success: true };
   } catch (error) {
     return rejectWithValue(handleError(error));
+  } finally {
+    dispatch(setIsLoading(false));
   }
 });

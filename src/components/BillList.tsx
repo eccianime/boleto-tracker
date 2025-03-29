@@ -2,7 +2,9 @@ import colors from '@/config/colors';
 import { FontAwesome } from '@expo/vector-icons';
 import { FlatList, Platform, Text, View } from 'react-native';
 import BillListItem from './BillListItem';
-import { BillListProps } from './types';
+import { BillListItemProps, BillListProps } from './types';
+import { useAppDispatch } from '@/hooks';
+import { setBottomSheetVisible } from '@/redux/slices';
 
 const ListHeader = ({
   title,
@@ -56,6 +58,20 @@ export default function BillList({
     Platform.OS === 'ios' ? 'pb-[100]' : 'pb-[70]'
   }`;
 
+  const dispatch = useAppDispatch();
+
+  const handleShowBottomSheet = (item: BillListItemProps) => {
+    if (!isPayed) {
+      const { id, title, amount } = item;
+      const data = {
+        id,
+        title,
+        amount,
+      };
+      dispatch(setBottomSheetVisible({ isVisible: true, data }));
+    }
+  };
+
   if (isLoading) {
     return (
       <View className='flex-1 mx-6'>
@@ -74,7 +90,12 @@ export default function BillList({
       ListHeaderComponent={() => (
         <ListHeader title={title} payedNumber={payedNumber} />
       )}
-      renderItem={({ item }) => <BillListItem {...item} />}
+      renderItem={({ item }) => (
+        <BillListItem
+          {...item}
+          handleShowBottomSheet={() => handleShowBottomSheet(item)}
+        />
+      )}
       ListEmptyComponent={() => <EmptyList isPayed={isPayed} />}
       ListFooterComponentClassName='flex-1 justify-center items-center'
     />
