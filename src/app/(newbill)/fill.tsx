@@ -7,15 +7,24 @@ import { BillRegisterInputProps } from '@/redux/types';
 import { currencyFormat, formatDateDMY, isBillFormValid } from '@/utils';
 import { Ionicons } from '@expo/vector-icons';
 import { router, useLocalSearchParams } from 'expo-router';
-import { useEffect, useState } from 'react';
-import { Alert, Pressable, Text, TouchableOpacity, View } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
-import DatePicker from 'react-native-date-picker';
+import { useEffect, useState } from 'react';
+import {
+  Alert,
+  Modal,
+  Pressable,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import DateTimePicker, { useDefaultStyles } from 'react-native-ui-datepicker';
 
 export default function Fill() {
   const { code } = useLocalSearchParams<{ code: string }>();
   const { isLoading } = useAppSelector((state) => state.app);
   const dispatch = useAppDispatch();
+
+  const defaultStyles = useDefaultStyles();
 
   const [billData, setBillData] = useState<BillRegisterInputProps>({
     name: '',
@@ -71,49 +80,64 @@ export default function Fill() {
             onChangeText={(name: string) =>
               setBillData((prev) => ({ ...prev, name }))
             }
-            accessibilityLabel='Nome do boleto'
           />
 
-          <Pressable
-            onPress={() => setOpen(true)}
-            accessibilityLabel='Selecionar data de vencimento'
-            accessibilityRole='button'
-          >
+          <Pressable onPress={() => setOpen(true)} accessibilityRole='button'>
             <Input
               iconName='calendar-outline'
               readOnly
               placeholder='Vencimento'
               value={billData.dueDate}
-              onChangeText={() => {}} // Handled by date picker
-              accessibilityLabel='Data de vencimento'
             />
-            <DatePicker
-              modal
-              title={'Selecione a data de vencimento'}
-              confirmText='Confirmar'
-              cancelText='Cancelar'
-              locale='pt-BR'
-              mode='date'
-              open={open}
-              date={
-                new Date(
-                  new Date(
-                    billData.dueDate.split('/').reverse().join('-') +
-                      'T00:00:00'
-                  )
-                )
-              }
-              onConfirm={(date) => {
-                setOpen(false);
-                setBillData((prev) => ({
-                  ...prev,
-                  dueDate: formatDateDMY(date.toLocaleDateString()),
-                }));
-              }}
-              onCancel={() => {
-                setOpen(false);
-              }}
-            />
+            <Modal
+              visible={open}
+              transparent
+              onRequestClose={() => setOpen(false)}
+              animationType='fade'
+            >
+              <Pressable
+                className='flex-1 items-center justify-center bg-black/50'
+                onPress={() => setOpen(false)}
+              >
+                <View
+                  className='bg-white p-3 rounded-xl w-4/5'
+                  onTouchEnd={(e) => e.stopPropagation()}
+                >
+                  <DateTimePicker
+                    weekdaysFormat='short'
+                    monthCaptionFormat='full'
+                    styles={{
+                      ...defaultStyles,
+                      selected: {
+                        ...defaultStyles.selected,
+                        backgroundColor: colors.primary,
+                        borderRadius: 30,
+                      },
+                    }}
+                    locale='pt-BR'
+                    mode='single'
+                    date={
+                      new Date(
+                        billData.dueDate.split('/').reverse().join('-') +
+                          'T00:00:00'
+                      )
+                    }
+                    onChange={({ date }) => {
+                      const targetDate = new Date(
+                        date as string
+                      ).toLocaleDateString();
+
+                      setOpen(false);
+
+                      setBillData((prev) => ({
+                        ...prev,
+                        dueDate: formatDateDMY(targetDate),
+                      }));
+                    }}
+                  />
+                </View>
+              </Pressable>
+            </Modal>
           </Pressable>
 
           <Input
@@ -128,7 +152,6 @@ export default function Fill() {
             onChangeText={(value: string) =>
               setBillData((prev) => ({ ...prev, value: handleCurrency(value) }))
             }
-            accessibilityLabel='Valor do boleto'
           />
 
           <Input
@@ -142,7 +165,6 @@ export default function Fill() {
                 barCode: barCode.replace(/\D/g, ''),
               }))
             }
-            accessibilityLabel='Código de barras'
             accessibilityHint='Digite o código de barras do boleto'
           />
         </View>
