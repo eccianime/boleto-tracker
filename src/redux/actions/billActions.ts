@@ -122,6 +122,7 @@ export const payBill = createAsyncThunk<
       return { success: true };
     } catch (error) {
       return rejectWithValue(handleError(error));
+      dispatch(setIsLoading(true));
     }
   }
 );
@@ -142,8 +143,7 @@ export const deleteBill = createAsyncThunk<
 
     return { success: true };
   } catch (error) {
-    return rejectWithValue(handleError(error));
-  } finally {
     dispatch(setIsLoading(false));
+    return rejectWithValue(handleError(error));
   }
 });

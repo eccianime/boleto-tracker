@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>665566344654-slliq87m8kiotekbbhsrqbp10dh9e0me.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.665566344654-slliq87m8kiotekbbhsrqbp10dh9e0me</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>665566344654-geshp9tapnr97k0m2i3n6835rvu2l4rl.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCbIXA2ALw8FEMAw0E_KJKE7ooWJqMjd0A</string>
+	<key>GCM_SENDER_ID</key>
+	<string>665566344654</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.ingjeanpaulrojas.boletotracker</string>
+	<key>PROJECT_ID</key>
+	<string>app-03-library</string>
+	<key>STORAGE_BUCKET</key>
+	<string>app-03-library.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:665566344654:ios:a60289ebc24f90f6d9279f</string>
+	<key>DATABASE_URL</key>
+	<string>https://app-03-library-default-rtdb.firebaseio.com</string>
+</dict>
+</plist>
