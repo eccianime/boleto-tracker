@@ -1,50 +1,49 @@
-# Welcome to your Expo app 👋
+# Random Color App
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+This React Native application is a bill tracker app, where users register and check when their bills are payed to help to take control of their personal accounts. The base of this project is an [Open Source Figma](<https://www.figma.com/design/oJo3teJP4AkqiedVlMXh7J/PayFlow-(Community)?node-id=0-1&t=A6ItIvZClwS8UAk3-1>) file with some additions that were thought to be useful like email register and login and some other minor functions.
 
-## Get started
+## Features
 
-1. Install dependencies
+- **Google Authentication**: To ease the process of entering the app without much hassle.
+- **Firebase Authentication**: To handle login and logout by email.
+- **Barcode Scanner and Timer**: Showing a message if no code is found and giving the possibility to manually enter the code data.
+- **Redux Functions**: Managing state made easy with simple slicers and reducers.
+- **Typescript Support**: Making functions easier to understand.
+
+## Installation
+
+To run this project, make sure you have React Native set up on your machine. If not, follow the installation guide from the [React Native Documentation](https://reactnative.dev/docs/environment-setup).
+
+### Steps
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/eccianime/boleto-tracker.git
+   cd boleto-tracker
+   ```
+
+2. Install dependencies:
 
    ```bash
    npm install
    ```
 
-2. Start the app
+3. Run the app:
 
    ```bash
-    npx expo start
+   npm run android              # For Android
+   npm run ios                  # For iOS
    ```
 
-In the output, you'll find options to open the app in a
+### Styling
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+The app uses the color library nativewind using simpler layouts and themes.
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+### License
 
-## Get a fresh project
+This project is licensed under the MIT License. Feel free to customize and extend the app as per your needs!
 
-When you're ready, run:
+### Demo
 
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+![Demo](https://github.com/eccianime/boleto-tracker/blob/master/demo.gif)
