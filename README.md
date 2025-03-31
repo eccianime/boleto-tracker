@@ -1,4 +1,4 @@
-# Random Color App
+# BoletoTracker App
 
 This React Native application is a bill tracker app, where users register and check when their bills are payed to help to take control of their personal accounts. The base of this project is an [Open Source Figma](<https://www.figma.com/design/oJo3teJP4AkqiedVlMXh7J/PayFlow-(Community)?node-id=0-1&t=A6ItIvZClwS8UAk3-1>) file with some additions that were thought to be useful like email register and login and some other minor functions.
 
