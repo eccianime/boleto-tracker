@@ -6,11 +6,11 @@ import { registerBill } from '@/redux/actions';
 import { BillRegisterInputProps } from '@/redux/types';
 import { currencyFormat, formatDateDMY, isBillFormValid } from '@/utils';
 import { Ionicons } from '@expo/vector-icons';
-import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { Alert, Pressable, Text, TouchableOpacity, View } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
+import DatePicker from 'react-native-date-picker';
 
 export default function Fill() {
   const { code } = useLocalSearchParams<{ code: string }>();
@@ -23,27 +23,12 @@ export default function Fill() {
     value: 'R$ 0,00',
     barCode: '',
   });
+  const [open, setOpen] = useState(false);
 
   const handleCurrency = (value: string) => {
     const cleanValue = value.replace(/\D/g, '');
     const valueWithDecimals = Number(cleanValue) / 100;
     return currencyFormat(valueWithDecimals);
-  };
-
-  const openDatePicker = () => {
-    DateTimePickerAndroid.open({
-      mode: 'date',
-      display: 'calendar',
-      value: new Date(),
-      onChange: (_, date) => {
-        if (date) {
-          setBillData({
-            ...billData,
-            dueDate: formatDateDMY(date.toLocaleDateString()),
-          });
-        }
-      },
-    });
   };
 
   const handleSubmit = async () => {
@@ -90,7 +75,7 @@ export default function Fill() {
           />
 
           <Pressable
-            onPress={openDatePicker}
+            onPress={() => setOpen(true)}
             accessibilityLabel='Selecionar data de vencimento'
             accessibilityRole='button'
           >
@@ -101,6 +86,33 @@ export default function Fill() {
               value={billData.dueDate}
               onChangeText={() => {}} // Handled by date picker
               accessibilityLabel='Data de vencimento'
+            />
+            <DatePicker
+              modal
+              title={'Selecione a data de vencimento'}
+              confirmText='Confirmar'
+              cancelText='Cancelar'
+              locale='pt-BR'
+              mode='date'
+              open={open}
+              date={
+                new Date(
+                  new Date(
+                    billData.dueDate.split('/').reverse().join('-') +
+                      'T00:00:00'
+                  )
+                )
+              }
+              onConfirm={(date) => {
+                setOpen(false);
+                setBillData((prev) => ({
+                  ...prev,
+                  dueDate: formatDateDMY(date.toLocaleDateString()),
+                }));
+              }}
+              onCancel={() => {
+                setOpen(false);
+              }}
             />
           </Pressable>
 
